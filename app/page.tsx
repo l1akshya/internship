@@ -28,6 +28,10 @@ export default function TaskManager() {
   });
   const [formMessage, setFormMessage] = useState<{ text: string; type: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  
+  // Edit task state
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [editMessage, setEditMessage] = useState<{ text: string; type: string } | null>(null);
 
   // Function to fetch and parse CSV
   const fetchTasks = async () => {
@@ -109,8 +113,8 @@ export default function TaskManager() {
         throw new Error('Failed to save tasks');
       }
       
-      // Update the local state
-      setTasks(updatedTasks);
+      // Update the local state with a deep copy of the updated tasks
+      setTasks([...updatedTasks]); // Using spread operator to create a new array
       setIsSaving(false);
       return true;
     } catch (err) {
@@ -124,6 +128,17 @@ export default function TaskManager() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewTask(prev => ({ ...prev, [name]: value }));
+  };
+
+  // Handle edit form input changes
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    if (!editingTask) return;
+    
+    const { name, value } = e.target;
+    setEditingTask(prev => {
+      if (!prev) return null;
+      return { ...prev, [name]: value };
+    });
   };
 
   // Handle form submission
@@ -172,6 +187,77 @@ export default function TaskManager() {
     }
   };
 
+  // Handle edit form submission
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!editingTask) return;
+    
+    // Form validation
+    if (!editingTask.title.trim()) {
+      setEditMessage({ text: "Task title is required!", type: "error" });
+      return;
+    }
+    
+    try {
+      // Create updated tasks array with edited task
+      const updatedTasks = tasks.map(task => 
+        task.id === editingTask.id ? { ...editingTask } : task
+      );
+      
+      // Save to CSV
+      const success = await saveTasks(updatedTasks);
+      
+      if (success) {
+        setEditMessage({ text: "Task updated successfully!", type: "success" });
+        
+        // Clear edit message after a delay
+        setTimeout(() => {
+          setEditMessage(null);
+        }, 2000);
+      } else {
+        setEditMessage({ text: "Failed to update task. Please try again.", type: "error" });
+      }
+    } catch (err) {
+      console.error('Error updating task:', err);
+      setEditMessage({ text: "An error occurred while updating the task.", type: "error" });
+    }
+  };
+
+  // Handle task deletion
+  const handleDeleteTask = async (taskId: string) => {
+    if (!confirm("Are you sure you want to delete this task?")) {
+      return;
+    }
+    
+    try {
+      // Filter out the task to delete
+      const updatedTasks = tasks.filter(task => task.id !== taskId);
+      
+      // Save to CSV
+      const success = await saveTasks(updatedTasks);
+      
+      if (success) {
+        setEditMessage({ text: "Task deleted successfully!", type: "success" });
+        
+        // If currently editing the deleted task, reset the editing state
+        if (editingTask && editingTask.id === taskId) {
+          setEditingTask(null);
+        }
+        
+        // Clear message after a delay
+        setTimeout(() => {
+          setEditMessage(null);
+        }, 2000);
+      } else {
+        setEditMessage({ text: "Failed to delete task. Please try again.", type: "error" });
+      }
+    } catch (err) {
+      console.error('Error deleting task:', err);
+      setEditMessage({ text: "An error occurred while deleting the task.", type: "error" });
+    }
+  };
+
   // Calculate task status counts
   const getTaskStatusCounts = () => {
     const completed = tasks.filter(task => 
@@ -195,6 +281,14 @@ export default function TaskManager() {
     fetchTasks();
   }, []);
 
+  // Effect to update task list after editing
+  useEffect(() => {
+    // This will ensure the task list is updated when we navigate back to the task list
+    if (activeBoard === "Task List") {
+      fetchTasks();
+    }
+  }, [activeBoard]);
+
   // Get status counts
   const statusCounts = getTaskStatusCounts();
 
@@ -207,6 +301,7 @@ export default function TaskManager() {
             <button onClick={() => setActiveBoard("Dashboard")}>Dashboard</button>
             <button onClick={() => setActiveBoard("Task List")}>Task List</button>
             <button onClick={() => setActiveBoard("Add Task")}>Add Task</button>
+            <button onClick={() => setActiveBoard("Edit Tasks")}>Edit Tasks</button>
           </div>
           
           <div className="dashboard-content">
@@ -409,6 +504,121 @@ export default function TaskManager() {
                     </button>
                   </div>
                 </form>
+              </div>
+            )}
+            {activeBoard === "Edit Tasks" && (
+              <div className="edit-tasks-container">
+                <h2>Edit Tasks</h2>
+                
+                {editMessage && (
+                  <div className={`form-message ${editMessage.type}`}>
+                    {editMessage.text}
+                  </div>
+                )}
+                
+                {loading ? (
+                  <p className="loading">Loading tasks...</p>
+                ) : error ? (
+                  <p className="error">{error}</p>
+                ) : tasks.length === 0 ? (
+                  <p>No tasks found.</p>
+                ) : (
+                  <div className="edit-tasks-layout">
+                    <div className="task-list-sidebar">
+                      <h3>Select a Task to Edit</h3>
+                      {tasks.map((task) => (
+                        <div 
+                          key={task.id} 
+                          className={`task-select-item ${editingTask?.id === task.id ? 'active' : ''}`}
+                          onClick={() => setEditingTask({...task})} // Create a deep copy
+                        >
+                          <span className="task-select-title">{task.title}</span>
+                          <span className={`status-indicator ${task.status.toLowerCase().replace(' ', '-')}`}></span>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="task-edit-form">
+                      {editingTask ? (
+                        <form onSubmit={handleEditSubmit} className="task-form">
+                          <div className="form-group">
+                            <label htmlFor="edit-title">Task Title *</label>
+                            <input
+                              type="text"
+                              id="edit-title"
+                              name="title"
+                              value={editingTask.title}
+                              onChange={handleEditInputChange}
+                              required
+                              placeholder="Enter task title"
+                            />
+                          </div>
+                          
+                          <div className="form-group">
+                            <label htmlFor="edit-description">Description</label>
+                            <textarea
+                              id="edit-description"
+                              name="description"
+                              value={editingTask.description}
+                              onChange={handleEditInputChange}
+                              placeholder="Enter task description"
+                              rows={4}
+                            />
+                          </div>
+                          
+                          <div className="form-row">
+                            <div className="form-group">
+                              <label htmlFor="edit-status">Status</label>
+                              <select
+                                id="edit-status"
+                                name="status"
+                                value={editingTask.status}
+                                onChange={handleEditInputChange}
+                              >
+                                <option value="Pending">Pending</option>
+                                <option value="In-Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                              </select>
+                            </div>
+                            
+                            <div className="form-group">
+                              <label htmlFor="edit-dueDate">Due Date</label>
+                              <input
+                                type="date"
+                                id="edit-dueDate"
+                                name="dueDate"
+                                value={editingTask.dueDate}
+                                onChange={handleEditInputChange}
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="form-actions">
+                            <button 
+                              type="submit" 
+                              className="submit-btn"
+                              disabled={isSaving}
+                            >
+                              {isSaving ? "Saving..." : "Update Task"}
+                            </button>
+                            <button 
+                              type="button" 
+                              className="delete-btn"
+                              onClick={() => handleDeleteTask(editingTask.id)}
+                              disabled={isSaving}
+                            >
+                              Delete Task
+                            </button>
+                          </div>
+                        </form>
+                      ) : (
+                        <div className="no-task-selected">
+                          <p>Select a task from the list to edit</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
