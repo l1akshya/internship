@@ -301,3 +301,319 @@ body {
       font-size: 0.5rem;
     }
   }
+
+  /* Add these styles to your home.css file */
+
+/* Status Summary */
+.status-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    width: 90%;
+    margin: 0 auto 2vh;
+    padding: 1.5vh;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff00ff;
+    border-radius: 0.3vh;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  
+  .status-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 0.5vh;
+  }
+  
+  .status-label {
+    font-size: 0.7rem;
+    color: #ff99ff;
+    margin-right: 1vh;
+    flex: 1;
+    text-align: left;
+  }
+  
+  .status-count {
+    font-size: 0.7rem;
+    color: #ffffff;
+    margin-right: 1vh;
+    min-width: 1.5rem;
+    text-align: center;
+  }
+  
+  .percentage {
+    font-size: 0.6rem;
+    color: #ffffff;
+    min-width: 2rem;
+    text-align: right;
+  }
+  
+  /* Progress Bars */
+  .progress-bar-container {
+    height: 0.8vh;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.4vh;
+    flex: 3;
+    overflow: hidden;
+    margin: 0 1vh;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    border-radius: 0.4vh;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .progress-bar.completed {
+    background-color: #00cc00;
+    box-shadow: 0 0 5px #00cc00;
+  }
+  
+  .progress-bar.in-progress {
+    background-color: #0099ff;
+    box-shadow: 0 0 5px #0099ff;
+  }
+  
+  .progress-bar.pending {
+    background-color: #ffaa00;
+    box-shadow: 0 0 5px #ffaa00;
+  }
+  
+  .recent-tasks-title {
+    font-size: 0.9rem;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    color: #ff99ff;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .status-summary {
+      width: 95%;
+      padding: 1vh;
+    }
+    
+    .status-label,
+    .status-count {
+      font-size: 0.6rem;
+    }
+    
+    .percentage {
+      font-size: 0.5rem;
+    }
+    
+    .progress-bar-container {
+      height: 0.6vh;
+    }
+    
+    .recent-tasks-title {
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .status-summary {
+      width: 98%;
+      padding: 0.8vh;
+    }
+    
+    .status-label,
+    .status-count {
+      font-size: 0.5rem;
+    }
+    
+    .percentage {
+      font-size: 0.4rem;
+    }
+    
+    .progress-bar-container {
+      height: 0.5vh;
+    }
+    
+    .recent-tasks-title {
+      font-size: 0.7rem;
+    }
+  }
+
+/* Add Task Form Styles */
+.add-task-container {
+    width: 90%;
+    margin: 0 auto;
+    text-align: left;
+  }
+  
+  .task-form {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff00ff;
+    border-radius: 0.3vh;
+    padding: 2vh;
+    margin-top: 2vh;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  
+  .form-group {
+    margin-bottom: 1.5vh;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 2vh;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  .task-form label {
+    display: block;
+    font-size: 0.7rem;
+    color: #ff99ff;
+    margin-bottom: 0.5vh;
+    font-family: 'Press Start 2P', cursive;
+  }
+  
+  .task-form input,
+  .task-form textarea,
+  .task-form select {
+    width: 100%;
+    padding: 1vh;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #ff00ff;
+    border-radius: 0.2vh;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    box-sizing: border-box;
+    box-shadow: 0 0 5px rgba(255, 0, 255, 0.3);
+  }
+  
+  .task-form textarea {
+    resize: vertical;
+    min-height: 10vh;
+  }
+  
+  .task-form input:focus,
+  .task-form textarea:focus,
+  .task-form select:focus {
+    outline: none;
+    border-color: #ff99ff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2vh;
+    gap: 1vh;
+  }
+  
+  .submit-btn,
+  .cancel-btn {
+    padding: 1vh 2vh;
+    border: 2px solid #ff00ff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    cursor: url('/cursorbutton.png') 16 16, pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+  }
+  
+  .submit-btn {
+    background: #ff00ff;
+    color: #000;
+    box-shadow: 0 0 10px #ff00ff;
+    flex: 2;
+  }
+  
+  .cancel-btn {
+    background: #1a1a2e;
+    color: #fff;
+    box-shadow: 0 0 5px #ff00ff;
+    flex: 1;
+  }
+  
+  .submit-btn:hover {
+    background: #ff99ff;
+    box-shadow: 0 0 15px #ff99ff;
+  }
+  
+  .cancel-btn:hover {
+    background: #330033;
+    box-shadow: 0 0 10px #ff00ff;
+  }
+  
+  /* Form message styles */
+  .form-message {
+    padding: 1vh;
+    margin-bottom: 1.5vh;
+    border-radius: 0.2vh;
+    font-size: 0.6rem;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+  }
+  
+  .form-message.success {
+    background: rgba(0, 204, 0, 0.2);
+    border: 1px solid #00cc00;
+    color: #00cc00;
+  }
+  
+  .form-message.error {
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid #ff0000;
+    color: #ff0000;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+      gap: 1vh;
+    }
+    
+    .task-form label {
+      font-size: 0.6rem;
+    }
+    
+    .task-form input,
+    .task-form textarea,
+    .task-form select,
+    .submit-btn,
+    .cancel-btn {
+      font-size: 0.5rem;
+    }
+    
+    .add-task-container {
+      width: 95%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .task-form {
+      padding: 1vh;
+    }
+    
+    .task-form label {
+      font-size: 0.5rem;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+    }
+    
+    .submit-btn,
+    .cancel-btn {
+      width: 100%;
+    }
+    
+    .add-task-container {
+      width: 98%;
+    }
+  }
+  
+  /* Fix for date input */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) hue-rotate(280deg) brightness(1.5);
+    cursor: pointer;
+  }
