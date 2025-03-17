@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import "./home.css";
 
-
 // Define a type for our task
 type Task = {
   id: string;
@@ -28,6 +27,7 @@ export default function TaskManager() {
     dueDate: ""
   });
   const [formMessage, setFormMessage] = useState<{ text: string; type: string } | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Function to fetch and parse CSV
   const fetchTasks = async () => {
@@ -93,14 +93,29 @@ export default function TaskManager() {
   // Function to save tasks to CSV
   const saveTasks = async (updatedTasks: Task[]) => {
     try {
+      setIsSaving(true);
       const csvData = tasksToCSV(updatedTasks);
       
-      // In a real application, you would send this to your server
-      // For demonstration, we'll simulate success and update the state
+      // Send the CSV data to the server endpoint
+      const response = await fetch('/api/save-tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ csvData }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to save tasks');
+      }
+      
+      // Update the local state
       setTasks(updatedTasks);
+      setIsSaving(false);
       return true;
     } catch (err) {
       console.error('Error saving tasks:', err);
+      setIsSaving(false);
       return false;
     }
   };
@@ -123,7 +138,7 @@ export default function TaskManager() {
     
     try {
       // Generate a new ID (in a real app, this would be handled by the server)
-      const newId = String(Math.max(0, ...tasks.map(t => parseInt(t.id))) + 1);
+      const newId = String(Math.max(0, ...tasks.map(t => parseInt(t.id) || 0)) + 1);
       const taskToAdd = { ...newTask, id: newId };
       
       // Add the new task to our tasks array
@@ -368,7 +383,13 @@ export default function TaskManager() {
                   </div>
                   
                   <div className="form-actions">
-                    <button type="submit" className="submit-btn">Add Task</button>
+                    <button 
+                      type="submit" 
+                      className="submit-btn"
+                      disabled={isSaving}
+                    >
+                      {isSaving ? "Saving..." : "Add Task"}
+                    </button>
                     <button 
                       type="button" 
                       className="cancel-btn"
@@ -382,6 +403,7 @@ export default function TaskManager() {
                         });
                         setFormMessage(null);
                       }}
+                      disabled={isSaving}
                     >
                       Clear Form
                     </button>
