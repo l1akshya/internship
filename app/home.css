@@ -158,3 +158,146 @@ body {
         margin-top: 2vh;
     }
 }
+
+/* Add these styles to your home.css file */
+
+.dashboard-title {
+    font-size: 1.2rem;
+    margin-bottom: 2vh;
+    color: #ff00ff;
+  }
+  
+  .task-summary {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .task-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    margin-top: 2vh;
+  }
+  
+  .task-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff00ff;
+    border-radius: 0.3vh;
+    padding: 1.5vh;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  
+  .task-item h3 {
+    font-size: 0.9rem;
+    margin: 0 0 1vh 0;
+    color: #ff99ff;
+  }
+  
+  .task-item p {
+    font-size: 0.7rem;
+    margin: 0 0 1vh 0;
+    color: #cccccc;
+  }
+  
+  .task-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    margin-top: 1vh;
+  }
+  
+  .status {
+    padding: 0.2vh 0.5vh;
+    border-radius: 0.2vh;
+    font-size: 0.55rem;
+  }
+  
+  .status.pending {
+    background: #ffaa00;
+    color: #000;
+  }
+  
+  .status.completed {
+    background: #00cc00;
+    color: #000;
+  }
+  
+  .status.in-progress {
+    background: #0099ff;
+    color: #000;
+  }
+  
+  .due-date {
+    color: #ff99ff;
+  }
+  
+  .more-tasks {
+    text-align: center;
+    color: #ff99ff;
+    font-size: 0.7rem;
+    margin-top: 1vh;
+  }
+  
+  .loading, .error {
+    color: #ff99ff;
+    font-size: 0.8rem;
+    margin-top: 2vh;
+  }
+  
+  .task-list-container {
+    width: 100%;
+  }
+  
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    margin-top: 2vh;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 1vh;
+  }
+  
+  /* Custom scrollbar */
+  .task-list::-webkit-scrollbar {
+    width: 0.5vh;
+  }
+  
+  .task-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .task-list::-webkit-scrollbar-thumb {
+    background: #ff00ff;
+    border-radius: 0.5vh;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .task-item h3 {
+      font-size: 0.8rem;
+    }
+    
+    .task-item p {
+      font-size: 0.6rem;
+    }
+    
+    .task-meta {
+      font-size: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .task-item {
+      padding: 1vh;
+    }
+    
+    .task-item h3 {
+      font-size: 0.7rem;
+    }
+    
+    .task-item p {
+      font-size: 0.5rem;
+    }
+  }
