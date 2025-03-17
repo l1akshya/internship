@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background: linear-gradient(180deg, #0a0a0a, #1a1a2e);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+}
+
+body {
+    cursor: url('/cursor.png') 16 16, auto;
+}
+
+.title {
+    font-size: 4vh;
+    margin-top: 4vh;
+    font-weight: bold;
+    color: #ff00ff;
+    text-shadow: 0px 0.8vh 1.5vh rgba(255, 0, 255, 0.8);
+}
+
+.dashboard-container {
+    width: 100vw;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
+    padding: 0 2vw;
+    box-sizing: border-box;
+}
+
+.dashboard-box {
+    width: 95%;
+    min-height: 75vh;
+    background: linear-gradient(145deg, #222244, #441188);
+    border-radius: 0.5vh;
+    box-shadow: 0px 1vh 2vh rgba(255, 0, 255, 0.5);
+    padding: 3vh;
+    border: 0.5vh solid #ff00ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0 auto;
+}
+
+/* Position the buttons below the top half */
+.dashboard-buttons {
+    position: absolute;
+    top: 5%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    gap: 2vw;
+}
+
+.dashboard-buttons button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 2px solid #ff00ff;
+    background: #1a1a2e;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    cursor: url('/cursorbutton.png') 16 16, pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+.dashboard-buttons button:hover {
+    background: #FF1493;
+    color: #000;
+    box-shadow: 0 0 20px #FF1493;
+    cursor: url('/cursorbutton.png') 16 16, pointer;
+}
+
+/* Ensure content doesn't overlap the buttons */
+.dashboard-content {
+    padding-top: 10vh;
+    width: 100%;
+    text-align: center;
+}
+
+/* Responsive Design Fixes */
+@media (max-width: 768px) {
+    .dashboard-buttons {
+        flex-direction: column;
+        align-items: center;
+        top: auto;
+        position: relative;
+        width: 100%;
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+
+    .dashboard-buttons button {
+        width: 70%;
+        font-size: 0.65rem;
+        padding: 6px 10px;
+        margin-bottom: 6px;
+    }
+    
+    .dashboard-box {
+        padding: 2vh;
+        width: 92%;
+        margin: 0 auto;
+    }
+    
+    .dashboard-content {
+        padding-top: 0;
+        padding-left: 4vw;
+        padding-right: 4vw;
+        box-sizing: border-box;
+    }
+    
+    .title {
+        font-size: 3vh;
+        margin-top: 3vh;
+        margin-bottom: 1vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-buttons button {
+        width: 60%;
+        font-size: 0.5rem;
+        padding: 4px 8px;
+        margin-bottom: 4px;
+    }
+    
+    .dashboard-buttons {
+        margin-bottom: 0.5vh;
+    }
+    
+    .dashboard-box {
+        padding: 1.5vh;
+        width: 92%;
+        margin: 0 auto;
+    }
+    
+    .dashboard-content {
+        padding-left: 4vw;
+        padding-right: 4vw;
+    }
+
+    .title {
+        font-size: 2.5vh;
+        margin-top: 2vh;
+    }
+}
