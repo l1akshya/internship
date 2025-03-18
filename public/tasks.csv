@@ -1,6 +1,7 @@
 id,title,description,status,dueDate
 1,Complete project proposal,Write and submit the project proposal document for client review,Pending,25-03-2025
-2,Design UI mockupsz,Create initial UI mockups for the new app dashboard,In-Progress,20-03-2025
+2,Design UI mockups,Create initial UI mockups for the new app dashboard,In-Progress,20-03-2025
 3,Fix login bug,Resolve the authentication issue reported by users,Completed,15-03-2025
 4,Weekly team meeting,Discuss project progress and upcoming milestones,Pending,18-03-2025
 5,Update documentation,Review and update API documentation,Pending,22-03-2025
+6,deploy,deploy,In-Progress,2025-03-18

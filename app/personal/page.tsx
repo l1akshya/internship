@@ -12,52 +12,6 @@ type Task = {
   dueDate: string;
 };
 
-// Initial task data (defined outside the component to persist across rerenders)
-const initialTasks: Task[] = [
-  {
-    id: "1",
-    title: "Complete project proposal",
-    description: "Write and submit the project proposal document for client review",
-    status: "Pending",
-    dueDate: "25-03-2025"
-  },
-  {
-    id: "2",
-    title: "Design UI mockups",
-    description: "Create initial UI mockups for the new app dashboard",
-    status: "In-Progress",
-    dueDate: "20-03-2025"
-  },
-  {
-    id: "3",
-    title: "Fix login bug",
-    description: "Resolve the authentication issue reported by users",
-    status: "Completed",
-    dueDate: "15-03-2025"
-  },
-  {
-    id: "4",
-    title: "Weekly team meeting",
-    description: "Discuss project progress and upcoming milestones",
-    status: "Pending",
-    dueDate: "18-03-2025"
-  },
-  {
-    id: "5",
-    title: "Update documentation",
-    description: "Review and update API documentation",
-    status: "Pending",
-    dueDate: "22-03-2025"
-  },
-  {
-    id: "6",
-    title: "Deploy",
-    description: "Deploy the application to production",
-    status: "In-Progress",
-    dueDate: "2025-03-18"
-  }
-];
-
 export default function TaskManager() {
   const [activeBoard, setActiveBoard] = useState("Dashboard");
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -79,36 +33,88 @@ export default function TaskManager() {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [editMessage, setEditMessage] = useState<{ text: string; type: string } | null>(null);
 
-  // Load tasks from our in-memory array
-  const loadTasks = () => {
+  // Function to fetch and parse CSV
+  const fetchTasks = async () => {
     try {
       setLoading(true);
-      // Load from our tasks array
-      setTasks([...initialTasks]);
+      const response = await fetch('/tasks.csv');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch tasks');
+      }
+      
+      const csvText = await response.text();
+      const parsedTasks = parseCSV(csvText);
+      setTasks(parsedTasks);
       setLoading(false);
     } catch (err) {
-      console.error('Error loading tasks:', err);
+      console.error('Error fetching tasks:', err);
       setError('Failed to load tasks. Please try again later.');
       setLoading(false);
     }
   };
 
-  // Function to save tasks to our in-memory array
+  // Parse CSV text into task objects
+  const parseCSV = (csvText: string): Task[] => {
+    const lines = csvText.split('\n');
+    const headers = lines[0].split(',');
+    
+    return lines.slice(1).filter(line => line.trim() !== '').map((line, index) => {
+      const values = line.split(',');
+      const task: { [key: string]: string } = {};
+      
+      headers.forEach((header, i) => {
+        task[header.trim()] = values[i] ? values[i].trim() : '';
+      });
+      
+      return {
+        id: task.id || String(index + 1),
+        title: task.title || 'Untitled Task',
+        description: task.description || '',
+        status: task.status || 'Pending',
+        dueDate: task.dueDate || 'No due date'
+      };
+    });
+  };
+
+  // Convert tasks array back to CSV format
+  const tasksToCSV = (tasks: Task[]): string => {
+    const headers = ['id', 'title', 'description', 'status', 'dueDate'];
+    const headerRow = headers.join(',');
+    const dataRows = tasks.map(task => {
+      return [
+        task.id,
+        task.title,
+        task.description.replace(/,/g, ';'), // Replace commas in description to avoid CSV issues
+        task.status,
+        task.dueDate
+      ].join(',');
+    });
+    
+    return [headerRow, ...dataRows].join('\n');
+  };
+
+  // Function to save tasks to CSV
   const saveTasks = async (updatedTasks: Task[]) => {
     try {
       setIsSaving(true);
+      const csvData = tasksToCSV(updatedTasks);
       
-      // Simulate a brief saving delay for better UX
-      await new Promise(resolve => setTimeout(resolve, 300));
+      // Send the CSV data to the server endpoint
+      const response = await fetch('/api/save-tasks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ csvData }),
+      });
       
-      // Update the tasks state
-      setTasks(updatedTasks);
+      if (!response.ok) {
+        throw new Error('Failed to save tasks');
+      }
       
-      // IMPORTANT: Also update our initialTasks array for persistence
-      // This is the key change to make edits persist during runtime
-      initialTasks.length = 0; // Clear the array
-      updatedTasks.forEach(task => initialTasks.push({...task})); // Refill with updated tasks
-      
+      // Update the local state with a deep copy of the updated tasks
+      setTasks([...updatedTasks]); // Using spread operator to create a new array
       setIsSaving(false);
       return true;
     } catch (err) {
@@ -146,14 +152,14 @@ export default function TaskManager() {
     }
     
     try {
-      // Generate a new ID
+      // Generate a new ID (in a real app, this would be handled by the server)
       const newId = String(Math.max(0, ...tasks.map(t => parseInt(t.id) || 0)) + 1);
       const taskToAdd = { ...newTask, id: newId };
       
       // Add the new task to our tasks array
       const updatedTasks = [...tasks, taskToAdd];
       
-      // Save tasks
+      // Save to CSV
       const success = await saveTasks(updatedTasks);
       
       if (success) {
@@ -199,7 +205,7 @@ export default function TaskManager() {
         task.id === editingTask.id ? { ...editingTask } : task
       );
       
-      // Save tasks
+      // Save to CSV
       const success = await saveTasks(updatedTasks);
       
       if (success) {
@@ -228,7 +234,7 @@ export default function TaskManager() {
       // Filter out the task to delete
       const updatedTasks = tasks.filter(task => task.id !== taskId);
       
-      // Save tasks
+      // Save to CSV
       const success = await saveTasks(updatedTasks);
       
       if (success) {
@@ -270,10 +276,18 @@ export default function TaskManager() {
     return total > 0 ? Math.round((count / total) * 100) : 0;
   };
 
-  // Load tasks on component mount
+  // Fetch tasks on component mount
   useEffect(() => {
-    loadTasks();
+    fetchTasks();
   }, []);
+
+  // Effect to update task list after editing
+  useEffect(() => {
+    // This will ensure the task list is updated when we navigate back to the task list
+    if (activeBoard === "Task List") {
+      fetchTasks();
+    }
+  }, [activeBoard]);
 
   // Get status counts
   const statusCounts = getTaskStatusCounts();

@@ -1,0 +1,833 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background: linear-gradient(180deg, #0a0a0a, #1a1a2e);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+}
+
+body {
+    cursor: url('/cursor.png') 16 16, auto;
+}
+
+.title {
+    font-size: 4vh;
+    margin-top: 4vh;
+    font-weight: bold;
+    color: #ff00ff;
+    text-shadow: 0px 0.8vh 1.5vh rgba(255, 0, 255, 0.8);
+}
+
+.dashboard-container {
+    width: 100vw;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
+    padding: 0 2vw;
+    box-sizing: border-box;
+}
+
+.dashboard-box {
+    width: 95%;
+    min-height: 75vh;
+    background: linear-gradient(145deg, #222244, #441188);
+    border-radius: 0.5vh;
+    box-shadow: 0px 1vh 2vh rgba(255, 0, 255, 0.5);
+    padding: 3vh;
+    border: 0.5vh solid #ff00ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    position: relative;
+    margin: 0 auto;
+}
+
+/* Position the buttons below the top half */
+.dashboard-buttons {
+    position: absolute;
+    top: 5%;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    gap: 2vw;
+}
+
+.dashboard-buttons button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 2px solid #ff00ff;
+    background: #1a1a2e;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    cursor: url('/cursorbutton.png') 16 16, pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+.dashboard-buttons button:hover {
+    background: #FF1493;
+    color: #000;
+    box-shadow: 0 0 20px #FF1493;
+    cursor: url('/cursorbutton.png') 16 16, pointer;
+}
+
+/* Ensure content doesn't overlap the buttons */
+.dashboard-content {
+    padding-top: 10vh;
+    width: 100%;
+    text-align: center;
+}
+
+/* Responsive Design Fixes */
+@media (max-width: 768px) {
+    .dashboard-buttons {
+        flex-direction: column;
+        align-items: center;
+        top: auto;
+        position: relative;
+        width: 100%;
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+
+    .dashboard-buttons button {
+        width: 70%;
+        font-size: 0.65rem;
+        padding: 6px 10px;
+        margin-bottom: 6px;
+    }
+    
+    .dashboard-box {
+        padding: 2vh;
+        width: 92%;
+        margin: 0 auto;
+    }
+    
+    .dashboard-content {
+        padding-top: 0;
+        padding-left: 4vw;
+        padding-right: 4vw;
+        box-sizing: border-box;
+    }
+    
+    .title {
+        font-size: 3vh;
+        margin-top: 3vh;
+        margin-bottom: 1vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-buttons button {
+        width: 60%;
+        font-size: 0.5rem;
+        padding: 4px 8px;
+        margin-bottom: 4px;
+    }
+    
+    .dashboard-buttons {
+        margin-bottom: 0.5vh;
+    }
+    
+    .dashboard-box {
+        padding: 1.5vh;
+        width: 92%;
+        margin: 0 auto;
+    }
+    
+    .dashboard-content {
+        padding-left: 4vw;
+        padding-right: 4vw;
+    }
+
+    .title {
+        font-size: 2.5vh;
+        margin-top: 2vh;
+    }
+}
+
+/* Add these styles to your home.css file */
+
+.dashboard-title {
+    font-size: 1.2rem;
+    margin-bottom: 2vh;
+    color: #ff00ff;
+  }
+  
+  .task-summary {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .task-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    margin-top: 2vh;
+  }
+  
+  .task-item {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff00ff;
+    border-radius: 0.3vh;
+    padding: 1.5vh;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  
+  .task-item h3 {
+    font-size: 0.9rem;
+    margin: 0 0 1vh 0;
+    color: #ff99ff;
+  }
+  
+  .task-item p {
+    font-size: 0.7rem;
+    margin: 0 0 1vh 0;
+    color: #cccccc;
+  }
+  
+  .task-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    margin-top: 1vh;
+  }
+  
+  .status {
+    padding: 0.2vh 0.5vh;
+    border-radius: 0.2vh;
+    font-size: 0.55rem;
+  }
+  
+  .status.pending {
+    background: #ffaa00;
+    color: #000;
+  }
+  
+  .status.completed {
+    background: #00cc00;
+    color: #000;
+  }
+  
+  .status.in-progress {
+    background: #0099ff;
+    color: #000;
+  }
+  
+  .due-date {
+    color: #ff99ff;
+  }
+  
+  .more-tasks {
+    text-align: center;
+    color: #ff99ff;
+    font-size: 0.7rem;
+    margin-top: 1vh;
+  }
+  
+  .loading, .error {
+    color: #ff99ff;
+    font-size: 0.8rem;
+    margin-top: 2vh;
+  }
+  
+  .task-list-container {
+    width: 100%;
+  }
+  
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    margin-top: 2vh;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 1vh;
+  }
+  
+  /* Custom scrollbar */
+  .task-list::-webkit-scrollbar {
+    width: 0.5vh;
+  }
+  
+  .task-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  
+  .task-list::-webkit-scrollbar-thumb {
+    background: #ff00ff;
+    border-radius: 0.5vh;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .task-item h3 {
+      font-size: 0.8rem;
+    }
+    
+    .task-item p {
+      font-size: 0.6rem;
+    }
+    
+    .task-meta {
+      font-size: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .task-item {
+      padding: 1vh;
+    }
+    
+    .task-item h3 {
+      font-size: 0.7rem;
+    }
+    
+    .task-item p {
+      font-size: 0.5rem;
+    }
+  }
+
+  /* Add these styles to your home.css file */
+
+/* Status Summary */
+.status-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    width: 90%;
+    margin: 0 auto 2vh;
+    padding: 1.5vh;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff00ff;
+    border-radius: 0.3vh;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  
+  .status-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 0.5vh;
+  }
+  
+  .status-label {
+    font-size: 0.7rem;
+    color: #ff99ff;
+    margin-right: 1vh;
+    flex: 1;
+    text-align: left;
+  }
+  
+  .status-count {
+    font-size: 0.7rem;
+    color: #ffffff;
+    margin-right: 1vh;
+    min-width: 1.5rem;
+    text-align: center;
+  }
+  
+  .percentage {
+    font-size: 0.6rem;
+    color: #ffffff;
+    min-width: 2rem;
+    text-align: right;
+  }
+  
+  /* Progress Bars */
+  .progress-bar-container {
+    height: 0.8vh;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.4vh;
+    flex: 3;
+    overflow: hidden;
+    margin: 0 1vh;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    border-radius: 0.4vh;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .progress-bar.completed {
+    background-color: #00cc00;
+    box-shadow: 0 0 5px #00cc00;
+  }
+  
+  .progress-bar.in-progress {
+    background-color: #0099ff;
+    box-shadow: 0 0 5px #0099ff;
+  }
+  
+  .progress-bar.pending {
+    background-color: #ffaa00;
+    box-shadow: 0 0 5px #ffaa00;
+  }
+  
+  .recent-tasks-title {
+    font-size: 0.9rem;
+    margin-top: 2vh;
+    margin-bottom: 1vh;
+    color: #ff99ff;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .status-summary {
+      width: 95%;
+      padding: 1vh;
+    }
+    
+    .status-label,
+    .status-count {
+      font-size: 0.6rem;
+    }
+    
+    .percentage {
+      font-size: 0.5rem;
+    }
+    
+    .progress-bar-container {
+      height: 0.6vh;
+    }
+    
+    .recent-tasks-title {
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .status-summary {
+      width: 98%;
+      padding: 0.8vh;
+    }
+    
+    .status-label,
+    .status-count {
+      font-size: 0.5rem;
+    }
+    
+    .percentage {
+      font-size: 0.4rem;
+    }
+    
+    .progress-bar-container {
+      height: 0.5vh;
+    }
+    
+    .recent-tasks-title {
+      font-size: 0.7rem;
+    }
+  }
+
+/* Add Task Form Styles */
+.add-task-container {
+    width: 90%;
+    margin: 0 auto;
+    text-align: left;
+  }
+  
+  .task-form {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff00ff;
+    border-radius: 0.3vh;
+    padding: 2vh;
+    margin-top: 2vh;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+  }
+  
+  .form-group {
+    margin-bottom: 1.5vh;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 2vh;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  .task-form label {
+    display: block;
+    font-size: 0.7rem;
+    color: #ff99ff;
+    margin-bottom: 0.5vh;
+    font-family: 'Press Start 2P', cursive;
+  }
+  
+  .task-form input,
+  .task-form textarea,
+  .task-form select {
+    width: 100%;
+    padding: 1vh;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #ff00ff;
+    border-radius: 0.2vh;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    box-sizing: border-box;
+    box-shadow: 0 0 5px rgba(255, 0, 255, 0.3);
+  }
+  
+  .task-form textarea {
+    resize: vertical;
+    min-height: 10vh;
+  }
+  
+  .task-form input:focus,
+  .task-form textarea:focus,
+  .task-form select:focus {
+    outline: none;
+    border-color: #ff99ff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2vh;
+    gap: 1vh;
+  }
+  
+  .submit-btn,
+  .cancel-btn {
+    padding: 1vh 2vh;
+    border: 2px solid #ff00ff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    cursor: url('/cursorbutton.png') 16 16, pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+  }
+  
+  .submit-btn {
+    background: #ff00ff;
+    color: #000;
+    box-shadow: 0 0 10px #ff00ff;
+    flex: 2;
+  }
+  
+  .cancel-btn {
+    background: #1a1a2e;
+    color: #fff;
+    box-shadow: 0 0 5px #ff00ff;
+    flex: 1;
+  }
+  
+  .submit-btn:hover {
+    background: #ff99ff;
+    box-shadow: 0 0 15px #ff99ff;
+  }
+  
+  .cancel-btn:hover {
+    background: #330033;
+    box-shadow: 0 0 10px #ff00ff;
+  }
+  
+  /* Form message styles */
+  .form-message {
+    padding: 1vh;
+    margin-bottom: 1.5vh;
+    border-radius: 0.2vh;
+    font-size: 0.6rem;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+  }
+  
+  .form-message.success {
+    background: rgba(0, 204, 0, 0.2);
+    border: 1px solid #00cc00;
+    color: #00cc00;
+  }
+  
+  .form-message.error {
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid #ff0000;
+    color: #ff0000;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+      gap: 1vh;
+    }
+    
+    .task-form label {
+      font-size: 0.6rem;
+    }
+    
+    .task-form input,
+    .task-form textarea,
+    .task-form select,
+    .submit-btn,
+    .cancel-btn {
+      font-size: 0.5rem;
+    }
+    
+    .add-task-container {
+      width: 95%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .task-form {
+      padding: 1vh;
+    }
+    
+    .task-form label {
+      font-size: 0.5rem;
+    }
+    
+    .form-actions {
+      flex-direction: column;
+    }
+    
+    .submit-btn,
+    .cancel-btn {
+      width: 100%;
+    }
+    
+    .add-task-container {
+      width: 98%;
+    }
+  }
+  
+  /* Fix for date input */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) hue-rotate(280deg) brightness(1.5);
+    cursor: pointer;
+  }
+
+  /* Edit Tasks Container Styles */
+.edit-tasks-container {
+  width: 90%;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.edit-tasks-layout {
+  display: flex;
+  gap: 2vh;
+  margin-top: 2vh;
+}
+
+/* Task List Sidebar Styles */
+.task-list-sidebar {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #ff00ff;
+  border-radius: 0.3vh;
+  padding: 1.5vh;
+  max-height: 50vh;
+  overflow-y: auto;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+.task-list-sidebar h3 {
+  font-size: 0.8rem;
+  color: #ff99ff;
+  margin-top: 0;
+  margin-bottom: 1.5vh;
+  text-align: center;
+}
+
+.task-select-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1vh;
+  margin-bottom: 1vh;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  border-radius: 0.2vh;
+  cursor: url('/cursorbutton.png') 16 16, pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.task-select-item:hover {
+  background: rgba(255, 0, 255, 0.1);
+  border-color: rgba(255, 0, 255, 0.6);
+}
+
+.task-select-item.active {
+  background: rgba(255, 0, 255, 0.2);
+  border-color: #ff00ff;
+  box-shadow: 0 0 8px rgba(255, 0, 255, 0.5);
+}
+
+.task-select-title {
+  font-size: 0.6rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+  text-align: left;
+}
+
+.status-indicator {
+  width: 0.8vh;
+  height: 0.8vh;
+  border-radius: 50%;
+}
+
+.status-indicator.pending {
+  background: #ffaa00;
+  box-shadow: 0 0 5px #ffaa00;
+}
+
+.status-indicator.completed {
+  background: #00cc00;
+  box-shadow: 0 0 5px #00cc00;
+}
+
+.status-indicator.in-progress {
+  background: #0099ff;
+  box-shadow: 0 0 5px #0099ff;
+}
+
+/* Task Edit Form Styles */
+.task-edit-form {
+  flex: 2;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid #ff00ff;
+  border-radius: 0.3vh;
+  padding: 2vh;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+.no-task-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  color: #ff99ff;
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.delete-btn {
+  padding: 1vh 2vh;
+  border: 2px solid #ff0000;
+  background: #330000;
+  color: #fff;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.6rem;
+  cursor: url('/cursorbutton.png') 16 16, pointer;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+  box-shadow: 0 0 5px #ff0000;
+  flex: 1;
+}
+
+.delete-btn:hover {
+  background: #660000;
+  box-shadow: 0 0 10px #ff0000;
+}
+
+/* Custom scrollbar for task list sidebar */
+.task-list-sidebar::-webkit-scrollbar {
+  width: 0.4vh;
+}
+
+.task-list-sidebar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.task-list-sidebar::-webkit-scrollbar-thumb {
+  background: #ff00ff;
+  border-radius: 0.4vh;
+}
+
+/* Responsive adjustments for Edit Tasks */
+@media (max-width: 768px) {
+  .edit-tasks-layout {
+    flex-direction: column;
+  }
+  
+  .task-list-sidebar {
+    max-height: 30vh;
+  }
+  
+  .task-list-sidebar h3 {
+    font-size: 0.7rem;
+  }
+  
+  .task-select-title {
+    font-size: 0.5rem;
+  }
+  
+  .delete-btn {
+    font-size: 0.5rem;
+  }
+  
+  .no-task-selected {
+    height: 20vh;
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-tasks-layout {
+    gap: 1vh;
+  }
+  
+  .task-list-sidebar {
+    padding: 1vh;
+    max-height: 25vh;
+  }
+  
+  .task-list-sidebar h3 {
+    font-size: 0.6rem;
+    margin-bottom: 1vh;
+  }
+  
+  .task-select-item {
+    padding: 0.8vh;
+    margin-bottom: 0.8vh;
+  }
+  
+  .task-select-title {
+    font-size: 0.4rem;
+  }
+  
+  .status-indicator {
+    width: 0.6vh;
+    height: 0.6vh;
+  }
+  
+  .task-edit-form {
+    padding: 1vh;
+  }
+  
+  .no-task-selected {
+    font-size: 0.5rem;
+  }
+  
+  .delete-btn {
+    font-size: 0.4rem;
+  }
+}
+
+  
+  
